@@ -17,4 +17,22 @@ class Question extends Model
         $this->attributes['slug'] = str_slug($value);
     }
 
+    public function getUrlAttribute(Type $var = null){
+        return route("questions.show", $this->id);
+    }
+
+    public function getCreatedDateAttribute(Type $var = null){
+        return $this->created_at->diffForHumans();
+    }
+
+    public function getStatusAttribute(){
+        if($this->answers > 0){
+            if($this->best_answer_id){
+                return "answer-accepted";
+            }
+            return "answered";
+        }
+        return "unanswered";
+    }
+
 }
